@@ -1,5 +1,4 @@
 import random
-import numpy
 import math
 import time
 
@@ -18,7 +17,7 @@ def minimax(state, depth, maximizing):
 
 
 def bestmove():
-    pass
+    score = -math.inf
 
 print("ready")
 
