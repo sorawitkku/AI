@@ -22,9 +22,6 @@ def scoring_method(board, piece, N, M, X):
                 return 10
             elif piece == 2:
                 return -50
-        elif seq.count(piece) == X - 2 and seq.count(0) == 2:
-            if piece == 1:
-                return 5
         return 0
 
     score = 0
