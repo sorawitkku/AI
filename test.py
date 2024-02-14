@@ -11,17 +11,16 @@ def all_possible_moves(count_list, N, M):
     return [i for i in range(M) if count_list[i] != N]
 
 def scoring_method(board, piece, N, M, X):
+    oppo_piece = 2
     def check_sequence(seq):
         if seq.count(piece) == X:
-            if piece == 1:
                 return 100
-            elif piece == 2:
-                return -100
         elif seq.count(piece) == X - 1 and seq.count(0) == 1:
             if piece == 1:
                 return 10
-            elif piece == 2:
-                return -50
+            
+        if seq.count(oppo_piece) == X - 1 and seq.count(0) == 1:
+                return -80
         return 0
 
     score = 0
@@ -41,7 +40,7 @@ def scoring_method(board, piece, N, M, X):
 
 def best_move(board, count_list, my_piece, N, M, X):
     best_score = -math.inf
-    best_move = None
+    best_move = random.choice(all_possible_moves(count_list, N, M))
     for move in all_possible_moves(count_list, N, M):
         sim_board = board.copy()
         update_state(sim_board, move, my_piece, count_list)
