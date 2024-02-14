@@ -10,6 +10,31 @@ def update_state(board, move, piece, count_list):
 def all_possible_moves(count_list, N, M):
     return [i for i in range(M) if count_list[i] != N]
 
+def is_game_over(board, piece, N, M, X):
+    if all(board[(i,j)] != 0 for i in range(N) for j in range(M)):
+        return True, 0
+    for row in range(N):
+        for col in range(M - X + 1):
+            if all(board[(row, col + i)] == piece for i in range(X)):
+                return True, piece
+
+    for row in range(N - X + 1):
+        for col in range(M):
+            if all(board[(row + i, col)] == piece for i in range(X)):
+                return True, piece
+
+    for row in range(N - X + 1):
+        for col in range(M - X + 1):
+            if all(board[(row + i, col + i)] == piece for i in range(X)):
+                return True, piece
+
+    for row in range(N - X + 1):
+        for col in range(X - 1, M):
+            if all(board[(row + i, col - i)] == piece for i in range(X)):
+                return True, piece
+
+    return False, 0
+
 def scoring_method(board, piece, N, M, X):
     oppo_piece = 2
     def check_sequence(seq):
@@ -20,10 +45,14 @@ def scoring_method(board, piece, N, M, X):
                 return 10
             
         if seq.count(oppo_piece) == X - 1 and seq.count(0) == 1:
-                return -80
+                return -90
         return 0
-
     score = 0
+
+    middle_col = M // 2
+    middle_col_count = sum(1 for row in range(N) if board[(row, middle_col)] == piece)
+    score += middle_col_count * 6
+
     for row in range(N):
         for col in range(M - X + 1):
             score += check_sequence([board[(row, col + i)] for i in range(X)])
